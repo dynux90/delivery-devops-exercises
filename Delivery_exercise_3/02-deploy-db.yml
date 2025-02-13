@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exercise3-mariadb-deployment
+  namespace: exercise3
+  labels:
+    app: exercise3-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exercise3-db
+  template:
+    metadata:
+      labels:
+        app: exercise3-db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:latest
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: MYSQL_DATABASE
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: MYSQL_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exercise3-mariadb-service
+  namespace: exercise3
+spec:
+  selector:
+    app: exercise3-db
+  ports:
+    - name: mysql
+      port: 3306       
+      targetPort: 3306 
+  type: ClusterIP

@@ -1,0 +1,10 @@
+- hosts: all
+  tasks:
+    - name: Make a folder
+      file:
+        path: "/home/{{ whoami.stdout }}/compose"
+        state: directory
+    - name: Pull from Git
+      get_url:
+        url: https://raw.githubusercontent.com/dynux90/delivery-devops-exercises/refs/heads/main/Delivery_exercise_1/docker-compose.yml
+        dest: "/home/{{ whoami.stdout }}/compose"

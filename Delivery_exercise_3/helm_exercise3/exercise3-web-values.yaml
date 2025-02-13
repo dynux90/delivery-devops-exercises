@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image: 
+  repository: bddagostino/exercise1
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+
+containerPorts:
+  - name: webport
+    containerPort: 8080
+    protocol: TCP
+
+livenessProbe: false
+readinessProbe: false
+
+env:
+  - name: MYSQL_HOST
+    value: exercise3-db
+
+envSecret:
+  - envName: MYSQL_DATABASE
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_DATABASE
+  - envName: MYSQL_USER
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_USER
+  - envName: MYSQL_PASSWORD
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_PASSWORD
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: webport
+  protocol: TCP
+  name: web-service

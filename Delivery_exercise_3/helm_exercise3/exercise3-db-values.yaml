@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image: 
+  repository: mariadb
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+
+containerPorts:
+  - name: mysqlport
+    containerPort: 3306
+    protocol: TCP
+
+livenessProbe: false
+readinessProbe: false
+
+envSecret:
+  - envName: MYSQL_ROOT_PASSWORD
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_ROOT_PASSWORD
+  - envName: MYSQL_DATABASE
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_DATABASE
+  - envName: MYSQL_USER
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_USER
+  - envName: MYSQL_PASSWORD
+    secretKeyRef:
+      name:  mariadb-secrets
+      key: MYSQL_PASSWORD
+
+service:
+  type: ClusterIP
+  port: 3306
+  targetPort: mysqlport
+  protocol: TCP
+  name: mysql-service
