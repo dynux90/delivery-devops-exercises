@@ -19,7 +19,11 @@ You don't have to manage persistence right now
    ```shell
    kubectl apply -f 00-namespace.yml -f 01-secrets.yml -f 02-deploy-db.yml -f 03-deploy-web.yml
    ```
-3. In folder `helm_exercise` , please first create namespace and secrets
+3. In folder `helm_exercise3` , please first create namespace and secrets
+   ```shell
+   # creating helm template structure
+   helm create helm_exercise3
+   ```
    ```shell
    kubectl create ns exercise3 # or take it from 00-namespace.yml
    ```
